@@ -23,6 +23,15 @@ def turn_off():
         GPIO.output(2,GPIO.LOW)
         return 'Pin set to LOW'
 
+@app.route('/toggle')
+def toggle():
+	state = state = GPIO.input(2)
+	if state == True:
+		GPIO.output(2, GPIO.LOW)
+	else:
+		GPIO.output(2, GPIO.HIGH)
+	return 'Pin was toggled'
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
