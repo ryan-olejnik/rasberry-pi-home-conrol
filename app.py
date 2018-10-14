@@ -8,7 +8,6 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(True)
 GPIO.setup(2,GPIO.OUT)
 
-mode = 'normal'
 
 @app.route('/')
 def index():
@@ -33,10 +32,9 @@ def toggle():
 		GPIO.output(2, GPIO.HIGH)
 	return 'Pin was toggled'
 
-@app.route('/rave')
+@app.route('/toggle_rave')
 def rave():
-	mode = 'rave'
-	while mode == 'rave':
+	while True:
 		GPIO.output(2, GPIO.HIGH)
 		time.sleep(0.1)
 		GPIO.output(2, GPIO.LOW)

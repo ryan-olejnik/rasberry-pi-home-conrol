@@ -9,11 +9,14 @@
 		<h3>Control Pins Below:</h3>
 		<div class='control-container'>
 			<p class='control-label'>Pin 2</p>		
-			<button onClick='setOn(2)' >Turn On</button>
-			<button onClick='setOff(2)' >Turn Off</button>
-			<button onClick='toggle(2)' >Toggle</button>
-			<button onClick='rave(2)' >Rave!!!</button>
-
+			<button onClick='setOn(2)' >Change GPIO 2</button>
+			function setOn(gpioPin) {
+        url = 'http://10.42.0.66:5000/turn_on';
+        fetch(url).then(response => {
+                console.log('inside fetch, response =', response);
+        })
+}
+		
 		</div>
 	</body>
 </html>
