@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<link rel="stylesheet" href='/static/style.css' />
+	</head>
+	<body>
+		<h1>Home Control</h1>
+		<p>Control shit around your house!!</p>
+		<button onClick='setOn(1)' >Change GPIO 1</button>
+		<script>
+			function setOn(gpioPin) {
+				alert(`pin ${gpioPin} has been set to on!`);
+			}
+                        function setOff(gpioPin) {
+                                alert(`pin ${gpioPin} has been set to off!`);
+                        }
+
+
+		</script>
+	</body>
+</html>
