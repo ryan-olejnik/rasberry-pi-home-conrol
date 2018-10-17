@@ -7,16 +7,24 @@ body {
 }
 
 .control-container {
-    display: flex;
-    width: 80%;
-    justify-content: center;
+	display: flex;
+	width: 100%;
 }
 
 .control-label {
 	margin: 0;
+	width: 50%;
+	font-size: x-large;
+	text-align: center;
+	align-self: center;
+	font-size: 34px;
 }
 
 button {
-	border-radius: 5px;
-	margin: 0 5px;
+	border-radius: 10px;
+	margin: 5px;
+	width: 90%;
+	height: 60px;
+	font-size: 34px;
 }
+
