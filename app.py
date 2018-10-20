@@ -37,7 +37,7 @@ def turn_off():
 def toggle():
 	channel = int(request.args['channel'])
 
-	state = state = GPIO.input(channel)
+	state = GPIO.input(channel)
 	if state == True:
 		GPIO.output(channel, GPIO.LOW)
 	else:
