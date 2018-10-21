@@ -14,16 +14,23 @@ GPIO.output(2, GPIO.HIGH)
 GPIO.output(3, GPIO.HIGH)
 
 is_rave_mode_2 = False
+was_rave_mode_2 = False
 
 def check_rave_mode():
+	global was_rave_mode_2
 	while True:
 		if is_rave_mode_2 == True:
+			was_rave_mode_2 = True
 			print('Rave mode!')
 			state = GPIO.input(2)
 			if state == True:
 				GPIO.output(2, GPIO.LOW)
 			else:
 				GPIO.output(2, GPIO.HIGH)
+		else:
+			if was_rave_mode_2:
+				GPIO.output(2, GPIO.HIGH)
+				was_rave_mode_2 = False
 		time.sleep(0.2)
 
 
