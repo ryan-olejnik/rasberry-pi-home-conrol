@@ -48,9 +48,11 @@ def turn_on():
 
 @app.route('/turn_off')
 def turn_off():
-        channel = int(request.args['channel'])
-        GPIO.output(channel,GPIO.HIGH)
-        return 'Channel {} set to OFF'.format(channel)
+	channel = int(request.args['channel'])
+	global is_rave_mode_2
+	is_rave_mode_2 = False
+	GPIO.output(channel,GPIO.HIGH)
+	return 'Channel {} set to OFF'.format(channel)
 
 
 @app.route('/toggle')
