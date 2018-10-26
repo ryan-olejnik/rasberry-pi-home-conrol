@@ -13,25 +13,35 @@ GPIO.setup(3, GPIO.OUT)
 GPIO.output(2, GPIO.HIGH)
 GPIO.output(3, GPIO.HIGH)
 
-is_rave_mode_2 = False
-was_rave_mode_2 = False
+is_rave_mode = {
+	1: False,
+	2: False,
+	3: False
+}
+
+was_rave_mode = {
+	1: False,
+	2: False,
+	3: False
+}
 
 def check_rave_mode():
-	global was_rave_mode_2
+	global was_rave_mode
 	while True:
-		if is_rave_mode_2 == True:
-			was_rave_mode_2 = True
-			print('Rave mode!')
-			state = GPIO.input(2)
-			if state == True:
-				GPIO.output(2, GPIO.LOW)
+		for channel in is_rave_mode:
+			if is_rave_mode[channel] == True:
+				was_rave_mode[channel] = True
+				print('Rave mode!')
+				state = GPIO.input(channel)
+				if state == True:
+					GPIO.output(channel, GPIO.LOW)
+				else:
+					GPIO.output(channel, GPIO.HIGH)
 			else:
-				GPIO.output(2, GPIO.HIGH)
-		else:
-			if was_rave_mode_2:
-				GPIO.output(2, GPIO.HIGH)
-				was_rave_mode_2 = False
-		time.sleep(0.25)
+				if was_rave_mode[channel]:
+					GPIO.output(channel, GPIO.HIGH)
+					was_rave_mode[channel] = False
+			time.sleep(0.1)
 
 
 @app.route('/')
@@ -49,8 +59,8 @@ def turn_on():
 @app.route('/turn_off')
 def turn_off():
 	channel = int(request.args['channel'])
-	global is_rave_mode_2
-	is_rave_mode_2 = False
+	global is_rave_mode
+	is_rave_mode[channel] = False
 	GPIO.output(channel,GPIO.HIGH)
 	return 'Channel {} set to OFF'.format(channel)
 
@@ -69,8 +79,8 @@ def toggle():
 @app.route('/toggle_rave')
 def rave():
 	channel = int(request.args['channel'])
-	global is_rave_mode_2
-	is_rave_mode_2 = not is_rave_mode_2
+	global is_rave_mode
+	is_rave_mode[channel] = not is_rave_mode[channel]
 	return 'Denenenenenenenenenen!'
 
 if __name__ == '__main__':
