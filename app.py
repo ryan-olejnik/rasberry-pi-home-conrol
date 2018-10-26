@@ -31,7 +31,7 @@ def check_rave_mode():
 			if was_rave_mode_2:
 				GPIO.output(2, GPIO.HIGH)
 				was_rave_mode_2 = False
-		time.sleep(0.2)
+		time.sleep(0.25)
 
 
 @app.route('/')
