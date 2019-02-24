@@ -2,7 +2,14 @@ from flask import Flask, render_template, request
 import RPi.GPIO as GPIO
 import time, threading
 
+# FROM VS CODE!!!
+
 app = Flask(__name__)
+
+channels = {
+	'blue_lights': 2,
+	'lamp_light': 3
+}
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(True)
@@ -13,35 +20,41 @@ GPIO.setup(3, GPIO.OUT)
 GPIO.output(2, GPIO.HIGH)
 GPIO.output(3, GPIO.HIGH)
 
-is_rave_mode = {
-	1: False,
-	2: False,
-	3: False
-}
-
-was_rave_mode = {
-	1: False,
-	2: False,
-	3: False
-}
+is_rave_mode = False
+was_rave_mode = False
 
 def check_rave_mode():
+	print('check_rave_mode function start')
+	global is_rave_mode
 	global was_rave_mode
+	global channels
+	
 	while True:
-		for channel in is_rave_mode:
-			if is_rave_mode[channel] == True:
-				was_rave_mode[channel] = True
-				print('Rave mode!')
-				state = GPIO.input(channel)
-				if state == True:
-					GPIO.output(channel, GPIO.LOW)
+		if is_rave_mode == True:
+			if was_rave_mode == False:
+				# Rave mode initialized!
+				was_rave_mode = True
+				# start with one channel on, one channel off so that they alternate
+				GPIO.output(channels['blue_lights'], GPIO.LOW)
+				GPIO.output(channels['lamp_light'], GPIO.HIGH)
+				continue
+
+			for channel_id in channels.values():
+				state = GPIO.input(channel_id)
+				if state == True: # if channel is OFF (True = OFF)
+					GPIO.output(channel_id, GPIO.LOW)
 				else:
-					GPIO.output(channel, GPIO.HIGH)
-			else:
-				if was_rave_mode[channel]:
-					GPIO.output(channel, GPIO.HIGH)
-					was_rave_mode[channel] = False
-			time.sleep(0.02)
+					GPIO.output(channel_id, GPIO.HIGH)
+
+		else:
+			if was_rave_mode == True:
+				# rave_mode was just turned off:
+				was_rave_mode = False
+				# Turn off channels if any are left on:
+				for channel_id in channels.values():
+					GPIO.output(channel_id, GPIO.HIGH)
+
+		time.sleep(0.07)
 
 
 @app.route('/')
@@ -51,39 +64,29 @@ def index():
 
 @app.route('/turn_on')
 def turn_on():
-	channel = int(request.args['channel'])
-	GPIO.output(channel,GPIO.LOW)
-	return 'Channel {} set to ON'.format(channel)
+	channel_name = request.args['channel']
+	channel_id = channels[channel_name]
+	GPIO.output(channel_id, GPIO.LOW)
+	return 'Channel {} set to ON'.format(channel_name)
 
 
 @app.route('/turn_off')
 def turn_off():
-	channel = int(request.args['channel'])
-	global is_rave_mode
-	is_rave_mode[channel] = False
-	GPIO.output(channel,GPIO.HIGH)
-	return 'Channel {} set to OFF'.format(channel)
+	channel_name = request.args['channel']
+	channel_id = channels[channel_name]
+	GPIO.output(channel_id, GPIO.HIGH)
 
+	return 'Channel {} set to OFF'.format(channel_name)
 
-@app.route('/toggle')
-def toggle():
-	channel = int(request.args['channel'])
-
-	state = GPIO.input(channel)
-	if state == True:
-		GPIO.output(channel, GPIO.LOW)
-	else:
-		GPIO.output(channel, GPIO.HIGH)
-	return 'Pin was toggled'
 
 @app.route('/toggle_rave')
 def rave():
-	channel = int(request.args['channel'])
 	global is_rave_mode
-	is_rave_mode[channel] = not is_rave_mode[channel]
+	is_rave_mode = not is_rave_mode
 	return 'Denenenenenenenenenen!'
 
+
 if __name__ == '__main__':
-	thread = threading.Thread(target = check_rave_mode)
-	thread.start()
+	rave_thread = threading.Thread(target = check_rave_mode)
+	rave_thread.start()
 	app.run(host='0.0.0.0')

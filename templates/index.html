@@ -5,24 +5,28 @@
 
 	</head>
 	<body>
-		<h1>Home Control</h1>
-		<h3>Control Pins Below:</h3>
-		<div class='control-container'>
-			<p class='control-label'>Pin 2</p>		
-			<button onClick='setOn(2)' >Turn On</button>
-			<button onClick='setOff(2)' >Turn Off</button>
-			<button onClick='toggle(2)' >Toggle</button>
-			<button onClick='rave(2)' >Rave!!!</button>
+        <div class='page-container'>       
+            <label class='control-label'>Blue Lights</label>
+            <div class='control-container'>
+                <button onClick='setOn("blue_lights")' >On</button>
+                <button onClick='setOff("blue_lights")' >Off</button>
+            </div>
+            
+            <label class='control-label'>Lamp Light</label>
+            <div class='control-container'>
+                <button onClick='setOn("lamp_light")' >On</button>
+                <button onClick='setOff("lamp_light")' >Off</button>
+            </div>
 
-		</div>
-                <div class='control-container'>
-                        <p class='control-label'>Pin 3</p>
-                        <button onClick='setOn(3)' >Turn On</button>
-                        <button onClick='setOff(3)' >Turn Off</button>
-                        <button onClick='toggle(3)' >Toggle</button>
-                        <button onClick='rave(3)' >Rave!!!</button>
-
-                </div>
-
+            <button class='rave-button' onClick='toggleRave()'>
+                <span class='R'>R</span>
+                <span class='A'>A</span>
+                <span class='V'>V</span>
+                <span class='E'>E</span>
+                <span class='exclamation-1'>!</span>
+                <span class='exclamation-2'>!</span>
+                <span class='exclamation-3'>!</span>
+            </button>
+        </div> 
 	</body>
 </html>
